@@ -22,6 +22,10 @@
       "ngx-qr": [
         "dist/ngx-qr/ngx-qr",
         "dist/ngx-qr"
+      ],
+      "ngx-qr-reader": [
+        "dist/ngx-qr-reader/ngx-qr-reader",
+        "dist/ngx-qr-reader"
       ]
     }
   },

@@ -1,0 +1,10 @@
+{
+  "name": "@nealhamilton/ngx-qr-reader",
+  "version": "0.0.3",
+  "peerDependencies": {
+    "@angular/common": "^9.0.2",
+    "@angular/core": "^9.0.2",
+    "tslib": "^1.10.0",
+    "@zxing/library": "^0.15.2"
+  }
+}
