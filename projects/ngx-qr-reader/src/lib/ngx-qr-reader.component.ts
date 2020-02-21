@@ -1,6 +1,26 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, Input, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+   OnInit,
+   ViewChild,
+   ElementRef,
+   Output,
+   Input,
+   EventEmitter,
+   OnChanges,
+   SimpleChanges,
+   OnDestroy
+} from '@angular/core';
 
-import { BrowserQRCodeReader, Result, Exception, NotFoundException, ChecksumException, FormatException } from '@zxing/library';
+import {
+  BrowserQRCodeReader,
+  BarcodeFormat,
+  DecodeHintType,
+  Result,
+  Exception,
+  NotFoundException,
+  ChecksumException,
+  FormatException
+} from '@zxing/library';
 
 @Component({
   selector: 'lib-ngx-qr-reader',
@@ -13,6 +33,15 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('preview', { static: false }) preview: ElementRef<HTMLVideoElement>;
 
   @Input() selectedDevice: MediaDeviceInfo;
+  @Input() formats: BarcodeFormat[] = [
+    BarcodeFormat.CODE_128,
+    BarcodeFormat.DATA_MATRIX,
+    BarcodeFormat.EAN_13,
+    BarcodeFormat.EAN_8,
+    BarcodeFormat.ITF,
+    BarcodeFormat.QR_CODE,
+    BarcodeFormat.RSS_14,
+  ];
   @Output() devices: EventEmitter<MediaDeviceInfo[]> = new EventEmitter();
   @Output() scanResults: EventEmitter<string> = new EventEmitter();
   @Output() errors: EventEmitter<Error> = new EventEmitter();
@@ -22,6 +51,7 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
+    this.setupReader();
     navigator.mediaDevices.enumerateDevices().then( (devices: MediaDeviceInfo[]) => {
       this.devices.emit(devices.filter( device => device.kind === 'videoinput'));
     });
@@ -36,6 +66,12 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.reader.reset();
     this.reader.stopContinuousDecode();
+  }
+
+  setupReader() {
+    const hints = new Map();
+    hints.set(DecodeHintType.POSSIBLE_FORMATS, this.formats);
+    this.reader.hints = hints;
   }
 
   startScanner(deviceId: string, video: HTMLVideoElement) {
