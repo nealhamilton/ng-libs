@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, Input, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, Input, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
 import { BrowserQRCodeReader, Result, Exception, NotFoundException, ChecksumException, FormatException } from '@zxing/library';
 
@@ -9,7 +9,7 @@ import { BrowserQRCodeReader, Result, Exception, NotFoundException, ChecksumExce
   `,
   styles: []
 })
-export class NgxQrReaderComponent implements OnInit, OnChanges {
+export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('preview', { static: false }) preview: ElementRef<HTMLVideoElement>;
 
   @Input() selectedDevice: MediaDeviceInfo;
@@ -31,6 +31,11 @@ export class NgxQrReaderComponent implements OnInit, OnChanges {
     if (changes.selectedDevice.currentValue !== changes.selectedDevice.previousValue) {
       this.startScanner(changes.selectedDevice.currentValue.deviceId, this.preview.nativeElement);
     }
+  }
+
+  ngOnDestroy() {
+    this.reader.reset();
+    this.reader.stopContinuousDecode();
   }
 
   startScanner(deviceId: string, video: HTMLVideoElement) {
