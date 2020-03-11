@@ -1,15 +1,15 @@
 import {
   Component,
-   OnInit,
-   ViewChild,
-   ElementRef,
-   Output,
-   Input,
-   EventEmitter,
-   OnChanges,
-   SimpleChanges,
-   OnDestroy
-} from '@angular/core';
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  Input,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy
+} from "@angular/core";
 
 import {
   BrowserQRCodeReader,
@@ -20,17 +20,19 @@ import {
   NotFoundException,
   ChecksumException,
   FormatException
-} from '@zxing/library';
+} from "@zxing/library";
 
 @Component({
-  selector: 'lib-ngx-qr-reader',
+  selector: "lib-ngx-qr-reader",
   template: `
     <video #preview id="ngx-qr-reader-preview"></video>
   `,
   styles: []
 })
 export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('preview', { static: false }) preview: ElementRef<HTMLVideoElement>;
+  @ViewChild("preview", { static: false }) preview: ElementRef<
+    HTMLVideoElement
+  >;
 
   @Input() selectedDevice: MediaDeviceInfo;
   @Input() formats: BarcodeFormat[] = [
@@ -40,7 +42,7 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
     BarcodeFormat.EAN_8,
     BarcodeFormat.ITF,
     BarcodeFormat.QR_CODE,
-    BarcodeFormat.RSS_14,
+    BarcodeFormat.RSS_14
   ];
   @Output() devices: EventEmitter<MediaDeviceInfo[]> = new EventEmitter();
   @Output() scanResults: EventEmitter<string> = new EventEmitter();
@@ -48,18 +50,29 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
 
   reader = new BrowserQRCodeReader();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.setupReader();
-    navigator.mediaDevices.enumerateDevices().then( (devices: MediaDeviceInfo[]) => {
-      this.devices.emit(devices.filter( device => device.kind === 'videoinput'));
-    });
+    navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices: MediaDeviceInfo[]) => {
+        this.devices.emit(
+          devices.filter(device => device.kind === "videoinput")
+        );
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.selectedDevice.currentValue !== changes.selectedDevice.previousValue) {
-      this.startScanner(changes.selectedDevice.currentValue.deviceId, this.preview.nativeElement);
+    if (
+      changes &&
+      changes.selectedDevice &&
+      changes.selectedDevice.currentValue
+    ) {
+      this.startScanner(
+        changes.selectedDevice.currentValue.deviceId,
+        this.preview.nativeElement
+      );
     }
   }
 
@@ -75,19 +88,24 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   startScanner(deviceId: string, video: HTMLVideoElement) {
-    this.reader.decodeFromVideoDevice(deviceId, video, (result: Result, err: Exception) => {
-      if ( result ) {
-        this.scanResults.emit(result.getText());
-      }
-      if (err) {
-        if (err instanceof NotFoundException ||
-          err instanceof ChecksumException ||
-          err instanceof FormatException
+    this.reader.decodeFromVideoDevice(
+      deviceId,
+      video,
+      (result: Result, err: Exception) => {
+        if (result) {
+          this.scanResults.emit(result.getText());
+        }
+        if (err) {
+          if (
+            err instanceof NotFoundException ||
+            err instanceof ChecksumException ||
+            err instanceof FormatException
           ) {
-        } else {
-          this.errors.emit(new Error(err.message));
+          } else {
+            this.errors.emit(new Error(err.message));
+          }
         }
       }
-    });
+    );
   }
 }
