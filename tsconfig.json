@@ -26,6 +26,10 @@
       "ngx-qr-reader": [
         "dist/ngx-qr-reader/ngx-qr-reader",
         "dist/ngx-qr-reader"
+      ],
+      "ngx-breadcrumbs": [
+        "dist/ngx-breadcrumbs/ngx-breadcrumbs",
+        "dist/ngx-breadcrumbs"
       ]
     }
   },
