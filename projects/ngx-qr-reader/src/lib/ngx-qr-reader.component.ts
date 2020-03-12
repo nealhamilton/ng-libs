@@ -35,6 +35,7 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
   >;
 
   @Input() selectedDevice: MediaDeviceInfo;
+  @Input() useDefaultDevice: boolean = false;
   @Input() formats: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
     BarcodeFormat.DATA_MATRIX,
@@ -69,10 +70,16 @@ export class NgxQrReaderComponent implements OnInit, OnChanges, OnDestroy {
       changes.selectedDevice &&
       changes.selectedDevice.currentValue
     ) {
-      this.startScanner(
-        changes.selectedDevice.currentValue.deviceId,
-        this.preview.nativeElement
-      );
+      if (this.useDefaultDevice) {
+        // use of undefined as device id,
+        // defaults to using environment facing camera...
+        this.startScanner(undefined, this.preview.nativeElement);
+      } else {
+        this.startScanner(
+          changes.selectedDevice.currentValue.deviceId,
+          this.preview.nativeElement
+        );
+      }
     }
   }
 

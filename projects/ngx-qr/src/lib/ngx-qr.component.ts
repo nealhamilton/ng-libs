@@ -1,8 +1,17 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import QRCode from 'qrcode';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+  AfterViewInit
+} from "@angular/core";
+import QRCode from "qrcode";
 
 @Component({
-  selector: 'lib-ngx-qr',
+  selector: "lib-ngx-qr",
   template: `
     <canvas #qrCanvas id="qrCanvas"></canvas>
   `,
@@ -13,7 +22,9 @@ export class NgxQrComponent implements AfterViewInit {
   @Input() data: string;
 
   /** HTMLCanvasElement for housing the generated qr code */
-  @ViewChild('qrCanvas', { static: false }) canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild("qrCanvas", { static: false }) canvas: ElementRef<
+    HTMLCanvasElement
+  >;
 
   /** Emits errors from qr generation to user */
   @Output() qrError: EventEmitter<any> = new EventEmitter();
@@ -21,14 +32,14 @@ export class NgxQrComponent implements AfterViewInit {
   /** Emits errors from qr generation to user */
   @Output() qrSuccess: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
   ngAfterViewInit(): void {
     this.toCanvas(this.data, this.canvas.nativeElement);
   }
 
   toCanvas(data: string, element: HTMLCanvasElement) {
-    QRCode.toCanvas(element, data, (err) => {
+    QRCode.toCanvas(element, data, err => {
       this.handleQrResponse(err);
     });
   }
