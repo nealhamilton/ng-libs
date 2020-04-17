@@ -30,6 +30,14 @@
       "ngx-breadcrumbs": [
         "dist/ngx-breadcrumbs/ngx-breadcrumbs",
         "dist/ngx-breadcrumbs"
+      ],
+      "ngx-qrcode-scanner": [
+        "dist/ngx-qrcode-scanner/ngx-qrcode-scanner",
+        "dist/ngx-qrcode-scanner"
+      ],
+      "ngx-signature-pad": [
+        "dist/ngx-signature-pad/ngx-signature-pad",
+        "dist/ngx-signature-pad"
       ]
     }
   },

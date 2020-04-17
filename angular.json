@@ -122,6 +122,86 @@
           }
         }
       }
+    },
+    "ngx-qrcode-scanner": {
+      "projectType": "library",
+      "root": "projects/ngx-qrcode-scanner",
+      "sourceRoot": "projects/ngx-qrcode-scanner/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-qrcode-scanner/tsconfig.lib.json",
+            "project": "projects/ngx-qrcode-scanner/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-qrcode-scanner/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-qrcode-scanner/src/test.ts",
+            "tsConfig": "projects/ngx-qrcode-scanner/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-qrcode-scanner/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-qrcode-scanner/tsconfig.lib.json",
+              "projects/ngx-qrcode-scanner/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-signature-pad": {
+      "projectType": "library",
+      "root": "projects/ngx-signature-pad",
+      "sourceRoot": "projects/ngx-signature-pad/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-signature-pad/tsconfig.lib.json",
+            "project": "projects/ngx-signature-pad/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-signature-pad/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-signature-pad/src/test.ts",
+            "tsConfig": "projects/ngx-signature-pad/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-signature-pad/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-signature-pad/tsconfig.lib.json",
+              "projects/ngx-signature-pad/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "ngx-qr"
 }
