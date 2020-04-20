@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { NgxSignaturePadComponent } from './ngx-signature-pad.component';
-import { SignaturePadComponent } from './signature-pad/signature-pad.component';
 
 
 
 @NgModule({
-  declarations: [NgxSignaturePadComponent, SignaturePadComponent],
+  declarations: [NgxSignaturePadComponent],
   imports: [
   ],
   exports: [NgxSignaturePadComponent]

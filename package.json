@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "publish:ngx-signature-pad": "ng build --prod --project ngx-signature-pad && npm publish dist/ngx-signature-pad --access=public"
   },
   "private": true,
   "dependencies": {
