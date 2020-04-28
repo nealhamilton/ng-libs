@@ -4,11 +4,18 @@ import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter }
   selector: 'lib-ngx-signature-pad',
   template: `
     <canvas id="sigPad" #signaturePad></canvas>
-    <button id="sidPadDoneBtn" (click)="exportAsImg()">Done</button>
-    <button id="sidPadDoneBtn" (click)="clearAll()">Reset</button>
+    <p>
+      <button class="mat-raised-button" id="sidPadDoneBtn" (click)="exportAsImg()">Done</button>
+      <button class="mat-button" id="sidPadClearBtn" (click)="clearAll()">Clear</button>
+      <button class="mat-button" id="sidPadCancelBtn" (click)="close()">Cancel</button>
+    </p>
   `,
   styles: [
-    '#sigPad { background: whitesmoke; }'
+    '#sigPad { background: whitesmoke; }',
+    '#sidPadClearBtn { margin-left: 3rem }',
+    '#sidPadCancelBtn { margin-left: 1rem }',
+    '.mat-button { background: transparent; padding: 0 16px; font-weight: bold; border: none }',
+    '.mat-raised-button { background: white; padding: 0 16px; font-weight: bold; border: none, box-shadow: 2px 2px 3px rgba(0,0,0,0.2); }',
   ]
 })
 export class NgxSignaturePadComponent implements OnInit {
@@ -16,6 +23,7 @@ export class NgxSignaturePadComponent implements OnInit {
   @Input() width = 900;
   @Input() height = 300;
   @Input() filename: string;
+  @Input() label: string;
   @Output() done = new EventEmitter<string>();
   canvasElement: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
@@ -39,6 +47,16 @@ export class NgxSignaturePadComponent implements OnInit {
     this.boudingRect = this.canvasElement.getBoundingClientRect();
     this.clearCanvas(this.canvasElement, this.context);
     this.setupListeners(this.canvasElement);
+
+    if (this.label) {
+      this.drawLabel(this.label);
+    }
+  }
+
+  drawLabel(label) {
+    this.context.font = 'regular 16px sans-serif';
+    this.context.lineWidth = 1;
+    this.context.fillText(label, 15, 30);
   }
 
   setupListeners(canvas: HTMLCanvasElement) {
@@ -103,6 +121,7 @@ export class NgxSignaturePadComponent implements OnInit {
 
   draw(context: CanvasRenderingContext2D, wayPoints: {x: number, y: number, end: boolean }[], opts: any = {}) {
     this.clearCanvas(this.canvasElement, this.context);
+    this.drawLabel(this.label);
 
     context.strokeStyle = opts.strokeStyle || '#000000F7';
     // context.lineJoin = opts.lineJoin || 'bevel';
@@ -166,7 +185,9 @@ export class NgxSignaturePadComponent implements OnInit {
   clearAll() {
     this.clearCanvas(this.canvasElement, this.context);
     this.clearSignature();
-    this.output = null;
-    this.done.emit(null);
+  }
+
+  close() {
+    this.done.emit('cancelled');
   }
 }
